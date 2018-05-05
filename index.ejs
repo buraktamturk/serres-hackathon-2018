@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <base href="/" />
+
+        <title>Serres Hackathon 2018</title>
+
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <style>
+          html, body {
+            margin:0;
+            padding:0;
+          }
+
+          .loader-middle {
+            width:100vw;
+            height:100vh;
+            display: table;
+          }
+
+          .loader-middle div {
+            vertical-align: middle;
+            text-align: center;
+            display: table-cell;
+          }
+
+          .loader-middle div svg {
+            width: 75px;
+            height: 75px;
+          }
+        </style>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700&amp;subset=latin-ext" rel="stylesheet">
+    </head>
+    <body>
+        <div ng-strict-di ng-app="serres-hackathon-2018" ui-view class="generalWrap">
+          <div class="loader-middle">
+            <div>
+
+            </div>
+          </div>
+        </div>
+        <script>
+          window.serres = function(data, fnc) {
+            if(data) 
+              if(window.serres.fnc) {
+                window.serres.fnc(data);
+                delete window.serres;
+              }
+              else
+                window.serres.data = data;
+            
+            if(fnc) 
+              if(window.serres.data) {
+                fnc(window.serres.data);
+                delete window.serres;
+              } else
+                window.serres.fnc = fnc;
+          };
+        </script>
+        <script>function mapsInit() { serres({}); }</script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrkGv8SU8FAnWVwGCfuE0YTS5_00YXuj0&libraries=places,geometry&callback=mapsInit"
+         async defer onerror="mapsInit()"></script>
+    </body>
+</html>
