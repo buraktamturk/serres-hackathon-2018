@@ -20,6 +20,7 @@ module.exports = class {
 		this.villages = [
 			{
 				name: 'Serres',
+				row: 1,
 				location: {
 					lat: 41.092083,
 					lng: 23.541016
@@ -27,6 +28,7 @@ module.exports = class {
 			},
 			{
 				name: 'Provatas',
+				row: 2,
 				location: {
 					lat: 41.068238,
 					lng: 23.390686
@@ -35,6 +37,7 @@ module.exports = class {
 			},
 			{
 				name: 'A. Kamila',
+				row: 4,
 				location: {
 					lat: 41.058320,
 					lng: 23.424134
@@ -43,6 +46,7 @@ module.exports = class {
 			},
 			{
 				name: 'K. Kamila',
+				row: 4,
 				location: {
 					lat: 41.020431,
 					lng: 23.483293
@@ -51,6 +55,7 @@ module.exports = class {
 			},
 			{
 				name: 'K. Mitrousi',
+				row: 3,
 				location: {
 					lat: 41.058680,
 					lng: 23.457547
@@ -59,6 +64,7 @@ module.exports = class {
 			},
 			{
 				name: 'Koumaria',
+				row: 4,
 				location: {
 					lat: 41.016434,
 					lng: 23.434656
@@ -67,6 +73,7 @@ module.exports = class {
 			},
 			{
 				name: 'Skoutari',
+				row: 2,
 				location: {
 					lat: 41.020032,
 					lng: 23.520701
@@ -75,6 +82,7 @@ module.exports = class {
 			},
 			{
 				name: 'Adelfiko',
+				row: 6,
 				location: {
 					lat: 41.014645,
 					lng: 23.457354
@@ -83,6 +91,7 @@ module.exports = class {
 			},
 			{
 				name: 'Ag. Eleni',
+				row: 5,
 				location: {
 					lat: 41.003545,
 					lng: 23.559196
@@ -91,6 +100,7 @@ module.exports = class {
 			},
 			{
 				name: 'Peponia',
+				row: 5,
 				location: {
 					lat: 40.988154,
 					lng: 23.516756
