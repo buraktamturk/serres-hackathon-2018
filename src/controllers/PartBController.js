@@ -1,102 +1,4 @@
-
-var villages = [
-	{
-		name: 'Serres',
-		location: {
-			lat: 41.092083,
-			lng: 23.541016
-		},
-		connections: ['Provatas', 'K. Mitrousi', 'Skoutari']
-	},
-	{
-		name: 'Provatas',
-		location: {
-			lat: 41.068238,
-			lng: 23.390686
-		},
-		connections: ['A. Kamila']
-	},
-	{
-		name: 'A. Kamila',
-		location: {
-			lat: 41.058320,
-			lng: 23.424134
-		},
-		connections: ['Koumaria']
-	},
-	{
-		name: 'K. Kamila',
-		location: {
-			lat: 41.020431,
-			lng: 23.483293
-		}
-	},
-	{
-		name: 'K. Mitrousi',
-		location: {
-			lat: 41.058680,
-			lng: 23.457547
-		},
-		connections: ['A. Kamila', 'K. Kamila']
-	},
-	{
-		name: 'Koumaria',
-		location: {
-			lat: 41.016434,
-			lng: 23.434656
-		}
-	},
-	{
-		name: 'Skoutari',
-		location: {
-			lat: 41.020032,
-			lng: 23.520701
-		},
-		connections: ['Peponia', 'Ag. Eleni']
-	},
-	{
-		name: 'Adelfiko',
-		location: {
-			lat: 41.014645,
-			lng: 23.457354
-		}
-	},
-	{
-		name: 'Ag. Eleni',
-		location: {
-			lat: 41.003545,
-			lng: 23.559196
-		},
-		connections: ['Peponia']
-	},
-	{
-		name: 'Peponia',
-		location: {
-			lat: 40.988154,
-			lng: 23.516756
-		},
-		connections: ['Adelfiko']
-	}
-];
-
-function apply_mutual_connections(villages) {
-	for(var village of villages) {
-		if(village.connections) {
-			for(var connection of village.connections) {
-				var target_village = villages.filter(a => a.name === connection)[0];
-
-				if(target_village.connections) {
-					if(target_village.connections.indexOf(village.name) == -1) {
-						target_village.connections.push(village.name);
-					}
-				} else {
-					target_village.connections = [village.name];
-				}
-			}
-		}
-	}
-}
-
+var villages;
 var rad = function(x) {
   return x * Math.PI / 180;
 };
@@ -117,9 +19,29 @@ function apply_cost( loc1, loc2 ) {
 	return getDistance(loc1.location, villages.filter(a => loc2 == a.name)[0].location);
 }
 
-function all_visit(locations) {
-	return villages.filter(a => locations.filter(b => b == a.name).length == 0).length == 0;
+function apply_dump( loc1, loc2 ) {
+	loc2 = villages.filter(a => loc2 == a.name)[0];
+	return loc2.bin_weight || 0;
 }
+
+function all_visit(locations, collected) {
+	return villages.filter(a => locations.filter(b => b == a.name).length == 0).length == 0;
+//	var all_visit = villages.filter(a => a.bin_weight && collected[a.name] && (collected[a.name] < a.bin_weight)).length == 0;
+//	if(all_visit) {
+//		console.log(collected);
+//	}
+//	return all_visit;
+}
+
+function all_visit_algo_2(locations, collected) {
+	return villages.filter(a => locations.filter(b => b == a.name).length == 0).length == 0;
+//	var all_visit = villages.filter(a => a.bin_weight && collected[a.name] && (collected[a.name] < a.bin_weight)).length == 0;
+//	if(all_visit) {
+//		console.log(collected);
+//	}
+//	return all_visit;
+}
+
 
 function following_taken(history, loc1, loc2) {
 	var count = 0;
@@ -138,55 +60,77 @@ function following_taken(history, loc1, loc2) {
 	return count;
 }
 
-function go(loc, cost) {
+function extend_collected_dump(old, name, count) {
+	var new_obj = {};
+
+	for(var key in old) {
+		new_obj[key] = old[key];
+	}
+
+	new_obj[name] = (new_obj[name] || 0) + count;
+
+	return new_obj;
+}
+
+function go(loc, cost, options, collected) {
+	if(cost == null) {
+		cost = {
+			cost: 0,
+			dump: 0,
+			locations: [
+				{ name: loc.name, cost: 0, total_cost: 0, dump: apply_dump(null, loc.name), total_dump: apply_dump(null, loc.name) }
+			]
+		};
+	}
+
+	if(collected == null) {
+		collected = {};
+	}
+
 	var locations = (loc.connections || [])
-		.filter(a => following_taken(cost.locations, loc.name, a) < 1);
+		.filter(a => following_taken(cost.locations.map(b => b.name), loc.name, a) < 1);
 
 	if(locations.length == 0) {
 		return cost;
 	}
 
-	locations = locations.map(a => go(villages.filter(b => b.name == a)[0], {
+	locations = locations
+		.map(a => go(villages.filter(b => b.name == a)[0], {
 			cost: (cost && cost.cost || 0) + apply_cost(loc, a),
-			locations: ((cost && cost.locations) || []).concat([a])
-		}))
-		.filter(a => a && a.locations[a.locations.length - 1] == 'Adelfiko');
+			locations: ((cost && cost.locations) || []).concat([{name: a, cost: apply_cost(loc, a), total_cost: (cost && cost.cost || 0) + apply_cost(loc, a), total_dump: ((cost && cost.dump) || 0) + apply_dump(loc, a) - (collected[a] || 0), dump: apply_dump(loc, a) - (collected[a] || 0)}]),
+			dump: ((cost && cost.dump) || 0) + apply_dump(loc, a) - (collected[a] || 0),
+			collected: extend_collected_dump(collected, a, apply_dump(loc, a) - (collected[a] || 0))
+		}, options, extend_collected_dump(collected, a, apply_dump(loc, a) - (collected[a] || 0))))
+		.filter(a => a && a.locations[a.locations.length - 1].name == 'Adelfiko');
 
 	var new_cost = locations.sort((a, b) => a.cost - b.cost)[0];
 
-	return new_cost || (all_visit(cost.locations) && loc.name == "Adelfiko" && cost);
+	return new_cost || (all_visit(cost.locations.map(a => a.name), collected) && loc.name == "Adelfiko" && cost);
 }
 
-apply_mutual_connections(villages);
-
 module.exports = class {
-	constructor() {
-		apply_mutual_connections(villages);
+	constructor(dataservice) {
+		'ngInject';
 
-		this.villages = villages;
-		this.start = villages[0];
+		villages = this.villages = dataservice.get();
+		this.start = this.villages[0];
 
 		this.dustbin_filter = false;
-		this.dustbins = [villages[5], villages[6], villages[9], villages[1]];
+		this.dustbins = [this.villages[5], this.villages[6], this.villages[9], this.villages[1]];
 
 		this.after_enabled = false;
 		this.after = 2;
-		this.after_dustbins = [villages[2], villages[4]];
-
-
+		this.after_dustbins = [this.villages[2], this.villages[4]];
 	}
 
 	calc() {
 		try {
-		this.result = go(villages[0], {
-			cost: 0,
-			locations: ['Serres']
-		});
+			this.result = go(this.start);
 
-		console.log(this.result);
-	} catch(e) {
-		console.error(e);
-	}
+			console.log(this.result);
+		} catch(e) {
+			console.error(e);
+		}
 	}
 
 	refer(array, i, d) {

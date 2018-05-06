@@ -24,7 +24,8 @@ serres(null, function(config) {
       require('angular-animate'),
       require('angular-translate'),
       require('angular1-scaffolder'),
-      require('./maps.js')
+      require('./maps.js'),
+      require('./data.js')
     ])
     .config(function ($sceProvider, $compileProvider) {
       'ngInject';
