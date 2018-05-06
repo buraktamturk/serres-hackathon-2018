@@ -37,6 +37,11 @@ This command will start a web server on port 6002, you can browse <http://localh
 
 Live demo is available at: <https://serres.robinsoft.org/>
 
+## Screenshots
+
+![Part B](https://raw.githubusercontent.com/buraktamturk/serres-hackathon-2018/master/screenshots/1.png)
+![Part B](https://raw.githubusercontent.com/buraktamturk/serres-hackathon-2018/master/screenshots/2.png)
+
 ## License
 
 [MIT](LICENSE)
