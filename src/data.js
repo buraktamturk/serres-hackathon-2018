@@ -62,6 +62,7 @@ var default_data = [
   },
   {
     name: 'Adelfiko',
+    final_destination: true,
     location: {
       lat: 41.014645,
       lng: 23.457354

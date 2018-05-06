@@ -18,7 +18,7 @@
       </div>
 
       <div class="custom-control custom-checkbox mt-1">
-        <input type="checkbox" class="custom-control-input" id="customCheck2">
+        <input type="checkbox" class="custom-control-input" id="customCheck2" ng-model="ctrl.dustbin_filter">
         <label class="custom-control-label" for="customCheck2">Limit dustbins to: </label>
 
         <div ng-repeat="dustbin in (ctrl.dustbins | add_one_if : ctrl.dustbins.length != ctrl.villages.length)" class="d-inline-block ml-1">
@@ -30,7 +30,7 @@
       </div>
 
       <div class="custom-control custom-checkbox mt-1">
-        <input type="checkbox" class="custom-control-input" id="customCheck3">
+        <input type="checkbox" class="custom-control-input" id="customCheck3" ng-model="ctrl.after_enabled">
         <label class="custom-control-label" for="customCheck3">After <input type="text" ng-model="ctrl.after" style="text-align:center;display:inline-block;width:50px" class="form-control form-control-inline form-control-sm"> iterations, new dustbins appears on: </label>
 
         <div ng-repeat="dustbin in (ctrl.after_dustbins | add_one_if : ctrl.after_dustbins.length != ctrl.villages.length)" class="d-inline-block ml-1">
@@ -43,8 +43,8 @@
 
 
       <div class="custom-control custom-checkbox mt-1">
-        <input type="checkbox" class="custom-control-input" id="customCheck3">
-        <label class="custom-control-label" for="customCheck3">Force weigth: <input type="text" ng-model="ctrl.after" style="text-align:center;display:inline-block;width:60px" class="form-control form-control-inline form-control-sm"> KG.</label>
+        <input type="checkbox" class="custom-control-input" ng-model="ctrl.force_weigth_enabled" id="customCheck4">
+        <label class="custom-control-label" for="customCheck4">Force weigth: <input type="text" ng-model="ctrl.force_weigth" style="text-align:center;display:inline-block;width:60px" class="form-control form-control-inline form-control-sm"> KG.</label>
       </div>
 
 
@@ -60,7 +60,7 @@
       <h3>Most Optimal Route</h3>
       <ol>
         <li ng-repeat="l in ctrl.result.locations track by $index">
-         {{ $first ? "Starting from " : $last ? "Final destination" : "Going to" }} <span class="buble">{{ l.name }}</span> <span class="road" ng-if="l.total_cost">road <b>{{ l.total_cost / 1000 | number : 2 }} km</b><b ng-if="l.cost"> (+{{ l.cost / 1000 | number : 2 }} km)</b></span> <span class="dump" ng-if="l.total_dump">dump <b>{{ l.total_dump || 0 }} kg<span ng-if="l.dump"> (+{{ l.dump }} kg)</span></b></span></li>
+         {{ $first ? "Starting from " : $last ? "Final destination" : l.dump ? "Going to" : "Passing by" }} <span class="buble">{{ l.name }}</span> <span class="road" ng-if="l.total_cost">road <b>{{ l.total_cost / 1000 | number : 2 }} km</b><b ng-if="l.cost"> (+{{ l.cost / 1000 | number : 2 }} km)</b></span> <span class="dump" ng-if="l.total_dump">dump <b>{{ l.total_dump || 0 }} kg<span ng-if="l.dump"> (+{{ l.dump }} kg)</span></b></span></li>
       </ol>
     </div>
   </div>
