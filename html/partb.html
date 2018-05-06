@@ -43,8 +43,8 @@
 
 
       <div class="custom-control custom-checkbox mt-1">
-        <input type="checkbox" class="custom-control-input" ng-model="ctrl.force_weigth_enabled" id="customCheck4">
-        <label class="custom-control-label" for="customCheck4">Force weigth: <input type="text" ng-model="ctrl.force_weigth" style="text-align:center;display:inline-block;width:60px" class="form-control form-control-inline form-control-sm"> KG.</label>
+        <input type="checkbox" class="custom-control-input" ng-model="ctrl.force_weigth_enabled" id="customCheck4" disabled>
+        <label class="custom-control-label" for="customCheck4">Force weigth: <input type="text" ng-model="ctrl.force_weigth" style="text-align:center;display:inline-block;width:60px" class="form-control form-control-inline form-control-sm" disabled> KG.</label>
       </div>
 
 
@@ -58,6 +58,7 @@
   <div class="row mt-3 mb-3" ng-if="ctrl.result">
     <div class="col-md-12">
       <h3>Most Optimal Route</h3>
+      <p>Finding it took {{ ctrl.result.time | number : 0 }}ms</p>
       <ol>
         <li ng-repeat="l in ctrl.result.locations track by $index">
          {{ $first ? "Starting from " : $last ? "Final destination" : l.dump ? "Going to" : "Passing by" }} <span class="buble">{{ l.name }}</span> <span class="road" ng-if="l.total_cost">road <b>{{ l.total_cost / 1000 | number : 2 }} km</b><b ng-if="l.cost"> (+{{ l.cost / 1000 | number : 2 }} km)</b></span> <span class="dump" ng-if="l.total_dump">dump <b>{{ l.total_dump || 0 }} kg<span ng-if="l.dump"> (+{{ l.dump }} kg)</span></b></span></li>

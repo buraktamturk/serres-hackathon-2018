@@ -139,6 +139,7 @@ module.exports = class {
 	}
 
 	calc() {
+		var t0 = (performance && performance.now()) || 0;
 		try {
 			var collected = {};
 
@@ -178,6 +179,13 @@ module.exports = class {
 					force_weigth_enabled: this.force_weigth_enabled,
 					force_weigth: Number(this.force_weigth)
 				}, collected);
+			}
+
+			var t1 = (performance && performance.now()) || 0;
+			if(this.result) {
+				this.result.time = t1 - t0;
+			} else {
+				alert("no solutions found for this route!");
 			}
 
 			console.log(this.result);

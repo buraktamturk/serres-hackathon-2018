@@ -3,15 +3,18 @@ module.exports = class {
 	constructor(dataservice) {
 		'ngInject';
 
+		this.dataservice = dataservice;
 		this.villages = dataservice.get();
 	}
 
 	save() {
-		this.villages = dataservice.set(this.villages);
+		this.villages = this.dataservice.set(this.villages);
+		alert('Done!');
     }
 
     reset() {
-    	this.villages = dataservice.reset();
+    	this.villages = this.dataservice.reset();
+    	alert('Done!');
     }
 
     refer(array, i, d) {

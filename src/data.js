@@ -115,11 +115,11 @@ module.exports = require('angular')
 
       return {
         get() {
-          return localStorage.getItem('data') || default_data;
+          return (localStorage.getItem('data') && JSON.parse(localStorage.getItem('data'))) || default_data;
         },
 
         set(data) {
-          localStorage.setItem('data', data);
+          localStorage.setItem('data', JSON.stringify(data));
           return data;
         },
 
