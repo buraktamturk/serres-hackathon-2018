@@ -49,7 +49,7 @@ serres(null, function(config) {
       return function (collection, key, other_collection, other_key, except_id) {
         return (collection || []).filter((obj1) => {
           for (let obj2 of (other_collection || [])) {
-            if (obj1[key] == obj2[other_key] && obj1[key] != except_id) {
+            if (obj1[key] == (other_key == "." ? obj2 : obj2[other_key]) && obj1[key] != except_id) {
               return false;
             }
           }

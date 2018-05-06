@@ -33,6 +33,12 @@ module.exports = require('angular')
             template: require('../html/partb.html'),
             controller: require('./controllers/PartBController.js'),
             controllerAs: 'ctrl'
+          })
+          .state('app.partc', {
+            url: '/c',
+            template: require('../html/partc.html'),
+            controller: require('./controllers/PartCController.js'),
+            controllerAs: 'ctrl'
           });
     })
     .name;

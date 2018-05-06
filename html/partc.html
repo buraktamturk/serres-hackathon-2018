@@ -1,0 +1,69 @@
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<div  ng-repeat="village in ctrl.villages">
+
+				<div class="mt-5 form-row">
+				    <div class="col">
+				    	<div class="form-group">
+				    		<label>Name</label>
+					      <input type="text" class="form-control" placeholder="Name" ng-model="village.name">
+					  </div>
+				    </div>
+			  	</div>
+				<div class="form-row">
+				    <div class="col">
+				    					    	<div class="form-group">
+				    		<label>Long</label>
+				      <input type="text" class="form-control" placeholder="Long" ng-model="village.location.lng">
+				  </div>
+				    </div>
+				    <div class="col">
+				    	<div class="form-group">
+				    		<label>Lat</label>
+				      <input type="text" class="form-control" placeholder="Lat" ng-model="village.location.lat">
+				  </div>
+				    </div>
+			  	</div>
+
+<div ng-repeat="connection in village.connections | add_one_if : village.connections.length != ctrl.villages.length" class="d-inline-block" ng-class="{'ml-1': !$first}">
+          <select ng-model="ctrl.refer(village.connections, $index, null).val" class="custom-select">
+            <option ng-value="null">Select...</option>
+            <option ng-repeat="option in (ctrl.villages )" ng-value="option.name">{{option.name}}</option>
+          </select>
+        </div>
+
+			  	<div class="form-group mt-3">
+				      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="customCheck1">
+        <label class="custom-control-label" for="customCheck1">Primary from</label>
+      </div>
+				  </div>
+				  <div class="form-group">
+				      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="customCheck2">
+        <label class="custom-control-label" for="customCheck2">Final destination</label>
+      </div>
+				  </div>
+				  <div class="form-group">
+				  	<a href class="btn btn-danger" ng-click="ctrl.villages.splice($index, 1)">Delete</a>
+				  </div>
+
+			</div>
+		</div>
+	</div>
+		<div class="row">
+		<div class="col-md-12">
+			<a class="btn btn-primary" href ng-click="ctrl.villages.push({connections: []})">Add</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="mt-5 col-md-12">
+			<a class="btn btn-primary" href ng-click="ctrl.save()">Save</a>
+			<a class="btn btn-danger" href ng-click="ctrl.reset()">Restore</a>
+			<a class="btn btn-danger" href ng-click="ctrl.villages = []">Delete All</a>
+		</div>
+	</div>
+</div>
+
