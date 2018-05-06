@@ -138,33 +138,7 @@ function following_taken(history, loc1, loc2) {
 	return count;
 }
 
-var asd = [];
-
-console.log(all_visit([ 'Serres',
-      'Provatas',
-      'A. Kamila',
-      'Koumaria',
-      'A. Kamila',
-      'K. Mitrousi',
-      'K. Kamila',
-      'K. Mitrousi',
-      'A. Kamila',
-      'Provatas',
-      'Serres',
-      'Skoutari',
-      'Ag. Eleni',
-      'Skoutari',
-      'Ag. Eleni',
-      'Adelfiko' ]));
-
-
 function go(loc, cost) {
-	if(loc.name == 'Adelfiko') {
-		if(all_visit(cost.locations)) {
-			asd.push(cost);
-		}
-	}
-
 	var locations = (loc.connections || [])
 		.filter(a => following_taken(cost.locations, loc.name, a) < 1);
 
@@ -180,25 +154,72 @@ function go(loc, cost) {
 
 	var new_cost = locations.sort((a, b) => a.cost - b.cost)[0];
 
-	return new_cost;
+	return new_cost || (all_visit(cost.locations) && loc.name == "Adelfiko" && cost);
 }
 
 apply_mutual_connections(villages);
-		var result = go(villages[0], {
-			cost: 0,
-			locations: ['Serres']
-		});
-
-console.log(asd.sort((a,b) => a.cost - b.cost));
 
 module.exports = class {
 	constructor() {
 		apply_mutual_connections(villages);
 
+		this.villages = villages;
+		this.start = villages[0];
+
+		this.dustbin_filter = false;
+		this.dustbins = [villages[5], villages[6], villages[9], villages[1]];
+
+		this.after_enabled = false;
+		this.after = 2;
+		this.after_dustbins = [villages[2], villages[4]];
+
+
+	}
+
+	calc() {
+		try {
 		this.result = go(villages[0], {
 			cost: 0,
 			locations: ['Serres']
 		});
+
 		console.log(this.result);
+	} catch(e) {
+		console.error(e);
 	}
+	}
+
+	refer(array, i, d) {
+        var that = this;
+        if(array && array.length && i < array.length) {
+          return {
+            get val() {
+              return array[i];
+            },
+
+            set val(a) {
+              if(a == d) {
+                array.splice(i, 1);
+                return d;
+              } else {
+                array[i] = a;
+              }
+            }
+          };
+        } else {
+          return {
+            a: d,
+
+            get val() {
+              return d;
+            },
+
+            set val(a) {
+              if(a != d) {
+                array.push(a);
+              }
+            }
+          };
+        }
+    }
 };

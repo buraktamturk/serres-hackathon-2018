@@ -1,1 +1,67 @@
-{{ ctrl }}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+
+      <div class="form-group row">
+          <label for="staticEmail" class="col-sm-2 col-form-label">Start Location</label>
+          <div class="col-sm-5">
+            <select ng-model="ctrl.start" class="custom-select">
+              <option ng-repeat="option in ctrl.villages" ng-value="option">{{option.name}}</option>
+            </select>
+          </div>
+        </div>
+
+      <div class="custom-control custom-checkbox mt-1">
+        <input type="checkbox" class="custom-control-input" id="customCheck1">
+        <label class="custom-control-label" for="customCheck1">Only go final destination once (at the end).</label>
+      </div>
+
+      <div class="custom-control custom-checkbox mt-1">
+        <input type="checkbox" class="custom-control-input" id="customCheck2">
+        <label class="custom-control-label" for="customCheck2">Limit dustbins to: </label>
+
+        <div ng-repeat="dustbin in (ctrl.dustbins | add_one_if : ctrl.dustbins.length != ctrl.villages.length)" class="d-inline-block ml-1">
+          <select ng-model="ctrl.refer(ctrl.dustbins, $index, null).val" class="custom-select">
+            <option ng-value="null">Select...</option>
+            <option ng-repeat="option in ctrl.villages | no : 'id' : ctrl.dustbins : 'id' : dustbin.id" ng-value="option">{{option.name}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="custom-control custom-checkbox mt-1">
+        <input type="checkbox" class="custom-control-input" id="customCheck3">
+        <label class="custom-control-label" for="customCheck3">After <input type="text" ng-model="ctrl.after" style="text-align:center;display:inline-block;width:50px" class="form-control form-control-inline"> iterations, new dustbins appears on: </label>
+
+        <div ng-repeat="dustbin in (ctrl.after_dustbins | add_one_if : ctrl.after_dustbins.length != ctrl.villages.length)" class="d-inline-block ml-1">
+          <select ng-model="ctrl.refer(ctrl.after_dustbins, $index, null).val" class="custom-select">
+            <option ng-value="null">Select...</option>
+            <option ng-repeat="option in ctrl.villages | no : 'id' : ctrl.after_dustbins : 'id' : dustbin.id" ng-value="option">{{option.name}}</option>
+          </select>
+        </div>
+      </div>
+
+
+      <div class="custom-control custom-checkbox mt-1">
+        <input type="checkbox" class="custom-control-input" id="customCheck3">
+        <label class="custom-control-label" for="customCheck3">Force weigth: <input type="text" ng-model="ctrl.after" style="text-align:center;display:inline-block;width:60px" class="form-control form-control-inline">kg.</label>
+      </div>
+
+
+</div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <a href class="btn btn-primary" ng-click="ctrl.calc()">Calculate</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Solution</h3>
+
+      <ol>
+        <li ng-repeat="l in ctrl.result.locations track by $index">{{ l }}</li>
+      </ol>
+    </div>
+  </div>
+</div>
