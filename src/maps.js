@@ -89,7 +89,7 @@ module.exports = require('angular')
                 var between = google.maps.geometry.spherical.interpolate(new google.maps.LatLng(connected_place.location), new google.maps.LatLng(place.location), 0.5);  
                 
                 new MapLabel({
-                  text: '111km',
+                  text: (window.get_distance(place.name, connected_place.name)/1000)+'km',
                   position: between,
                   map: map,
                   fontSize: 15,

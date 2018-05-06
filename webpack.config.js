@@ -56,6 +56,10 @@ module.exports = {
                 ]
             },
             {
+                test: /\.txt$/,
+                use: 'raw-loader'
+            },
+            {
                 test: /\.html$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: "html-loader?attrs[]=source:src&attrs[]=img:src&attrs[]=section:data-image-src"

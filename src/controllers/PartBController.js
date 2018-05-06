@@ -16,7 +16,14 @@ var getDistance = function(p1, p2) {
 };
 
 function apply_cost( loc1, loc2 ) {
-	return getDistance(loc1.location, villages.filter(a => loc2 == a.name)[0].location);
+	var distance = get_distance(loc1.name, loc2);
+	if(!distance) {
+		console.error('no distance found! falling back default one.', loc1.name, loc2);
+		return getDistance(loc1.location, villages.filter(a => loc2 == a.name)[0].location);
+	}
+
+	return distance;
+	//
 }
 
 function apply_dump( loc1, loc2, force_weigth_enabled, force_weigth ) {

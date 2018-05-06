@@ -1,4 +1,9 @@
 
+var destinations = require('../destinations.txt')
+  .split("\n")
+  .map(a => a.split('; ').map(b => b.split(':')))
+  .map(a => ({ point1: a[0][0], point2: a[1][0], distance: Number(a[2][1].substr(1, a[2][1].length - 2)) }));
+
 var default_data = [
   {
     name: 'Serres',
@@ -88,6 +93,17 @@ var default_data = [
   }
 ];
 
+function get_distance(name1, name2) {
+  for(var destination of destinations) {
+    if((destination.point1 == name1 && destination.point2 == name2) || 
+      (destination.point1 == name2 && destination.point2 == name1)) {
+      return destination.distance * 1000;
+    }
+  }
+}
+
+window.get_distance = get_distance;
+
 function apply_mutual_connections(villages) {
   for(var village of villages) {
     if(village.connections) {
@@ -127,6 +143,13 @@ module.exports = require('angular')
           localStorage.removeItem('data');
           return default_data;
         }
+      };
+    })
+    .factory('locationservice', function() {
+      'ngInject';
+
+      return {
+        get_distance
       };
     })
     .name;

@@ -13,18 +13,25 @@
 				    </div>
 			  	</div>
 				<div class="form-row">
-				    <div class="col">
-				    					    	<div class="form-group">
-				    		<label>Long</label>
-				      <input type="text" class="form-control" placeholder="Long" ng-model="village.location.lng">
-				  </div>
-				    </div>
-				    <div class="col">
+					<div class="col">
 				    	<div class="form-group">
 				    		<label>Lat</label>
 				      <input type="text" class="form-control" placeholder="Lat" ng-model="village.location.lat">
 				  </div>
 				    </div>
+				    <div class="col">
+				    					    	<div class="form-group">
+				    		<label>Long</label>
+				      <input type="text" class="form-control" placeholder="Long" ng-model="village.location.lng">
+				  </div>
+				</div>
+				  <div class="col">
+				    					    	<div class="form-group">
+				    		<label>Dump (kg)</label>
+				      <input type="text" class="form-control" placeholder="Dump" ng-model="village.bin_weight">
+				  </div>
+				    </div>
+				    
 			  	</div>
 
 <div ng-repeat="connection in village.connections | add_one_if : village.connections.length != ctrl.villages.length" class="d-inline-block" ng-class="{'ml-1': !$first}">
